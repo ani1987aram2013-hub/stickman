@@ -17,14 +17,21 @@
   .p1c{color:#1A1918;} .p2c{color:#1D3FBF;}
 </style>
 
-<header><h1>Ձողամարդ</h1><span class="sub">2 խաղացող — առաջինը 3 կլոր հաղթողը wins</span></header>
+<a href="./index.html" style="position:absolute;top:14px;left:18px;font-family:'Courier New',monospace;font-size:.7rem;color:#888;text-decoration:none;letter-spacing:.06em;border:1.5px solid #B0A898;padding:2px 8px;background:#fff;box-shadow:0 2px 0 #B0A898;border-radius:3px;" data-i18n="menuBack">← Menu</a>
+<header><h1 data-i18n="g0Title">Stickman</h1><span class="sub" data-i18n="g0Subtitle">2 Players — first to 3 rounds wins</span></header>
+<div class="lang-bar" style="position:fixed;top:14px;right:18px;display:flex;gap:6px;z-index:99">
+  <button class="lang-btn" onclick="setLang('hy')" id="btn-hy" style="font-family:'Courier New',monospace;font-size:.65rem;letter-spacing:.05em;border:1.5px solid #B0A898;background:#fff;color:#1A1918;padding:4px 9px;border-radius:3px;cursor:pointer;">🇦🇲 Հայ</button>
+  <button class="lang-btn" onclick="setLang('ru')" id="btn-ru" style="font-family:'Courier New',monospace;font-size:.65rem;letter-spacing:.05em;border:1.5px solid #B0A898;background:#fff;color:#1A1918;padding:4px 9px;border-radius:3px;cursor:pointer;">🇷🇺 Рус</button>
+  <button class="lang-btn" onclick="setLang('en')" id="btn-en" style="font-family:'Courier New',monospace;font-size:.65rem;letter-spacing:.05em;border:1.5px solid #B0A898;background:#fff;color:#1A1918;padding:4px 9px;border-radius:3px;cursor:pointer;">🇬🇧 Eng</button>
+</div>
 <canvas id="c" width="900" height="540"></canvas>
 <footer>
-  <span class="p1c">P1: <kbd>←</kbd><kbd>→</kbd> շարժ &nbsp;<kbd>↑</kbd><kbd>Spc</kbd> ցատկ</span>
-  <span class="p2c">P2: <kbd>A</kbd><kbd>D</kbd> շարժ &nbsp;<kbd>W</kbd> ցատկ</span>
-  <span><kbd>R</kbd> ռեսեt</span>
+  <span class="p1c">P1: <kbd>←</kbd><kbd>→</kbd> <span data-i18n="move">шarж</span> &nbsp;<kbd>↑</kbd><kbd>Spc</kbd> <span data-i18n="jump">ćatk</span></span>
+  <span class="p2c">P2: <kbd>A</kbd><kbd>D</kbd> <span data-i18n="move">шarж</span> &nbsp;<kbd>W</kbd> <span data-i18n="jump">ćatk</span></span>
+  <span><kbd>R</kbd> <span data-i18n="restart">ρestart</span></span>
 </footer>
 
+<script src="lang.js"></script>
 <script>
 class Rng{
   constructor(s){this.s=s|0;}
@@ -263,4 +270,5 @@ function render(){
 }
 
 (function loop(){update();render();requestAnimationFrame(loop);})();
+applyLang();
 </script>

@@ -12,14 +12,20 @@
         box-shadow:0 2px 0 rgba(0,0,0,.3); border-radius:3px; font-family:inherit; font-size:.6rem; }
   .p1c{color:#fff;} .p2c{color:#ffe94a;}
 </style>
-<h1>Ձołамard ③ — vs AI ❤</h1>
-<a href="./index.html" style="position:absolute;top:14px;left:18px;font-family:'Courier New',monospace;font-size:.7rem;color:#fff;text-decoration:none;letter-spacing:.06em;border:1.5px solid rgba(255,255,255,.4);padding:2px 8px;background:rgba(0,0,0,.2);border-radius:3px;">← Меню</a>
+<h1 data-i18n="g3TitleAI">Stickman ③ — vs AI ❤</h1>
+<a href="./index.html" style="position:absolute;top:14px;left:18px;font-family:'Courier New',monospace;font-size:.7rem;color:#fff;text-decoration:none;letter-spacing:.06em;border:1.5px solid rgba(255,255,255,.4);padding:2px 8px;background:rgba(0,0,0,.2);border-radius:3px;" data-i18n="menuBack">← Menu</a>
+<div class="lang-bar" style="position:fixed;top:14px;right:18px;display:flex;gap:6px;z-index:99">
+  <button class="lang-btn" onclick="setLang('hy')" id="btn-hy" style="font-family:'Courier New',monospace;font-size:.65rem;letter-spacing:.05em;border:1.5px solid rgba(255,255,255,.5);background:rgba(0,0,0,.25);color:#fff;padding:4px 9px;border-radius:3px;cursor:pointer;">🇦🇲 Հայ</button>
+  <button class="lang-btn" onclick="setLang('ru')" id="btn-ru" style="font-family:'Courier New',monospace;font-size:.65rem;letter-spacing:.05em;border:1.5px solid rgba(255,255,255,.5);background:rgba(0,0,0,.25);color:#fff;padding:4px 9px;border-radius:3px;cursor:pointer;">🇷🇺 Рус</button>
+  <button class="lang-btn" onclick="setLang('en')" id="btn-en" style="font-family:'Courier New',monospace;font-size:.65rem;letter-spacing:.05em;border:1.5px solid rgba(255,255,255,.5);background:rgba(0,0,0,.25);color:#fff;padding:4px 9px;border-radius:3px;cursor:pointer;">🇬🇧 Eng</button>
+</div>
 <canvas id="c" width="800" height="500"></canvas>
 <footer>
-  <span class="p1c">Ду: <kbd>←</kbd><kbd>→</kbd> шarж &nbsp;<kbd>↑</kbd><kbd>Space</kbd> цатк</span>
-  <span class="p2c">AI — խاղum e иnqyuro-пес</span>
-  <span><kbd>R</kbd> restart</span>
+  <span class="p1c"><kbd>←</kbd><kbd>→</kbd> <span data-i18n="move">шarж</span> &nbsp;<kbd>↑</kbd><kbd>Space</kbd> <span data-i18n="jump">ćatk</span></span>
+  <span class="p2c" data-i18n="aiPlays">AI — plays itself</span>
+  <span><kbd>R</kbd> <span data-i18n="restart">ρestart</span></span>
 </footer>
+<script src="lang.js"></script>
 <script>
 const cv=document.getElementById('c'),ct=cv.getContext('2d');
 const CW=800,CH=500;
@@ -220,7 +226,7 @@ function drawHUD(){
     ct.fillStyle=`rgba(0,0,0,${(flash/60)*.7})`;ct.fillRect(0,0,CW,CH);
     ct.fillStyle=flashWho===1?'#fff':'#ffe94a';
     ct.font='bold 64px system-ui';ct.textAlign='center';ct.textBaseline='middle';
-    ct.fillText((flashWho===1?'ДУ':'AI')+' ★!',CW/2,CH/2);
+    ct.fillText((flashWho===1?T('youLabel'):'AI')+' ★!',CW/2,CH/2);
     ct.textAlign='left';ct.textBaseline='alphabetic';
   }
   ct.textAlign='left';ct.textBaseline='alphabetic';
@@ -299,9 +305,9 @@ function drawGameOver(){
   const isPlayerWin=winner===1;
   ct.fillStyle=isPlayerWin?'#fff':'#ff4466';
   ct.font='bold 72px system-ui';
-  ct.fillText(isPlayerWin?'ДУ HԱՂECID!':'AI HԱՂECIN!',CW/2,CH/2-28);
+  ct.fillText(isPlayerWin?T('youWin'):T('aiWin'),CW/2,CH/2-28);
   ct.font='bold 20px Courier New';ct.fillStyle='rgba(255,255,255,.75)';
-  ct.fillText('R — restart',CW/2,CH/2+38);
+  ct.fillText(T('restartHint').replace('[R] ','R — '),CW/2,CH/2+38);
   ct.textAlign='left';ct.textBaseline='alphabetic';
 }
 
@@ -347,10 +353,11 @@ function render(){
   platforms.forEach(drawPlatform);
   coins.forEach(drawCoin);
   drawStar();drawParts();
-  drawFigure(P1,'#111');drawLabel(P1,'ДУ','#fff');
+  drawFigure(P1,'#111');drawLabel(P1,T('youLabel'),'#fff');
   drawFigure(P2,'#c27a00');drawLabel(P2,'AI','#ffe94a');
   drawHUD();
   if(gameOver)drawGameOver();
 }
 (function loop(){update();render();requestAnimationFrame(loop);})();
+applyLang();
 </script>

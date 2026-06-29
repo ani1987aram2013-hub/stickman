@@ -12,14 +12,20 @@
         box-shadow:0 2px 0 rgba(0,0,0,.3); border-radius:3px; font-family:inherit; font-size:.6rem; }
   .p1c{color:#fff;} .p2c{color:#ffe94a;}
 </style>
-<h1>Ձołамard ③ — 2P ∞</h1>
-<a href="./index.html" style="position:absolute;top:14px;left:18px;font-family:'Courier New',monospace;font-size:.7rem;color:#fff;text-decoration:none;letter-spacing:.06em;border:1.5px solid rgba(255,255,255,.4);padding:2px 8px;background:rgba(0,0,0,.2);border-radius:3px;">← Меню</a>
+<h1 data-i18n="g3Title2pInf">Stickman ③ — 2P ∞</h1>
+<a href="./index.html" style="position:absolute;top:14px;left:18px;font-family:'Courier New',monospace;font-size:.7rem;color:#fff;text-decoration:none;letter-spacing:.06em;border:1.5px solid rgba(255,255,255,.4);padding:2px 8px;background:rgba(0,0,0,.2);border-radius:3px;" data-i18n="menuBack">← Menu</a>
+<div class="lang-bar" style="position:fixed;top:14px;right:18px;display:flex;gap:6px;z-index:99">
+  <button class="lang-btn" onclick="setLang('hy')" id="btn-hy" style="font-family:'Courier New',monospace;font-size:.65rem;letter-spacing:.05em;border:1.5px solid rgba(255,255,255,.5);background:rgba(0,0,0,.25);color:#fff;padding:4px 9px;border-radius:3px;cursor:pointer;">🇦🇲 Հայ</button>
+  <button class="lang-btn" onclick="setLang('ru')" id="btn-ru" style="font-family:'Courier New',monospace;font-size:.65rem;letter-spacing:.05em;border:1.5px solid rgba(255,255,255,.5);background:rgba(0,0,0,.25);color:#fff;padding:4px 9px;border-radius:3px;cursor:pointer;">🇷🇺 Рус</button>
+  <button class="lang-btn" onclick="setLang('en')" id="btn-en" style="font-family:'Courier New',monospace;font-size:.65rem;letter-spacing:.05em;border:1.5px solid rgba(255,255,255,.5);background:rgba(0,0,0,.25);color:#fff;padding:4px 9px;border-radius:3px;cursor:pointer;">🇬🇧 Eng</button>
+</div>
 <canvas id="c" width="800" height="500"></canvas>
 <footer>
-  <span class="p1c">P1: <kbd>←</kbd><kbd>→</kbd> шarж &nbsp;<kbd>↑</kbd><kbd>Space</kbd> цатк</span>
-  <span class="p2c">P2: <kbd>A</kbd><kbd>D</kbd> шarж &nbsp;<kbd>W</kbd> цатк</span>
-  <span><kbd>R</kbd> restart</span>
+  <span class="p1c">P1: <kbd>←</kbd><kbd>→</kbd> <span data-i18n="move">шarж</span> &nbsp;<kbd>↑</kbd><kbd>Space</kbd> <span data-i18n="jump">ćatk</span></span>
+  <span class="p2c">P2: <kbd>A</kbd><kbd>D</kbd> <span data-i18n="move">шarж</span> &nbsp;<kbd>W</kbd> <span data-i18n="jump">ćatk</span></span>
+  <span><kbd>R</kbd> <span data-i18n="restart">ρestart</span></span>
 </footer>
+<script src="lang.js"></script>
 <script>
 const cv=document.getElementById('c'),ct=cv.getContext('2d');
 const CW=800,CH=500;
@@ -278,4 +284,5 @@ function render(){
   drawHUD();
 }
 (function loop(){update();render();requestAnimationFrame(loop);})();
+applyLang();
 </script>

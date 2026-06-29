@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.min.js"></script>
     <script src="fon.js"></script>
+    <script src="lang.js"></script>
 <meta charset="UTF-8">
-<title>Ձողամard — Меню</title>
+<title>Ձołamard — Menu</title>
 <style>
   :root { --bg:#F1EEE3; --paper:#FAFAF5; --ink:#1A1918; --blue:#1D3FBF; --s1:#C5C0AE; --s2:#B0AB99; }
   * { box-sizing:border-box; margin:0; padding:0; }
@@ -145,80 +146,7 @@
 <footer data-i18n="footer"></footer>
 
 <script>
-const LANGS = {
-  hy: {
-    title: 'Ձողամարդ',
-    subtitle: 'ընտրիր մակարդակ',
-    level1: 'Մարդում 1', level2: 'Մարդում 2', level3: 'Մարդում 3',
-    level4: 'Մարդում 4', level5: 'Մարդում 5',
-    easy:   'հեշտ',
-    normal: 'նորմալ',
-    hard:   'դժվար',
-    vhard:  'շատ դժվար',
-    extreme:'EXTREME',
-    g3_1p:   '1 Հոգի',    g3_1p_d:  'ցատկ ↑',
-    g3_2p:   '2 Հոգի',    g3_2p_d:  'կոոպ ↑',
-    g3_2ph:  '2 Հոգի ❤', g3_2ph_d: 'սրտիկներ ↑',
-    g3_ai:   'vs AI ❤',  g3_ai_d:  'AI ծրածոր ↑',
-    footer: '← / → շարժ  ·  ↑ / Space ցատկ  ·  R ռեստարտ',
-    cardTitle1: 'Ձողամարդ ①',
-    cardTitle2: 'Ձողամարդ ②',
-    cardTitle3: 'Ձողամարդ ③ ↑',
-  },
-  ru: {
-    title: 'Палочник',
-    subtitle: 'Выбери уровень',
-    level1: 'Уровень 1', level2: 'Уровень 2', level3: 'Уровень 3',
-    level4: 'Уровень 4', level5: 'Уровень 5',
-    easy:   'легко',
-    normal: 'нормально',
-    hard:   'сложно',
-    vhard:  'оч. сложно',
-    extreme:'ЭКСТРИМ',
-    g3_1p:   '1 Игрок',    g3_1p_d:  'прыжок ↑',
-    g3_2p:   '2 Игрока',   g3_2p_d:  'коопер. ↑',
-    g3_2ph:  '2 Игрока ❤', g3_2ph_d: 'сердечки ↑',
-    g3_ai:   'vs ИИ ❤',   g3_ai_d:  'vs ИИ ↑',
-    footer: '← / → движение  ·  ↑ / Space прыжок  ·  R рестарт',
-    cardTitle1: 'Палочник ①',
-    cardTitle2: 'Палочник ②',
-    cardTitle3: 'Палочник ③ ↑',
-  },
-  en: {
-    title: 'Stickman',
-    subtitle: 'Choose a level',
-    level1: 'Level 1', level2: 'Level 2', level3: 'Level 3',
-    level4: 'Level 4', level5: 'Level 5',
-    easy:   'easy',
-    normal: 'normal',
-    hard:   'hard',
-    vhard:  'very hard',
-    extreme:'EXTREME',
-    g3_1p:   '1 Player',    g3_1p_d:  'jump ↑',
-    g3_2p:   '2 Players',   g3_2p_d:  'co-op ↑',
-    g3_2ph:  '2 Players ❤', g3_2ph_d: 'hearts ↑',
-    g3_ai:   'vs AI ❤',    g3_ai_d:  'AI battle ↑',
-    footer: '← / → move  ·  ↑ / Space jump  ·  R restart',
-    cardTitle1: 'Stickman ①',
-    cardTitle2: 'Stickman ②',
-    cardTitle3: 'Stickman ③ ↑',
-  },
-};
-
-function setLang(code){
-  const t = LANGS[code];
-  if(!t) return;
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const v = t[el.dataset.i18n];
-    if(v !== undefined) el.textContent = v;
-  });
-  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('btn-'+code).classList.add('active');
-  document.documentElement.lang = code;
-  localStorage.setItem('lang', code);
-}
-
-setLang(localStorage.getItem('lang') || 'hy');
+// lang.js (loaded in <head>) handles applyLang() and setLang()
 </script>
 </body>
 </html>
