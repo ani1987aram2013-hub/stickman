@@ -398,6 +398,7 @@ function _buildProfile(device) {
 }
 
 function wFinish() {
+  localStorage.setItem('player_welcomed', '1');
   document.getElementById('welcome').style.display = 'none';
 }
 
@@ -406,7 +407,11 @@ document.getElementById('inp-name').addEventListener('keydown', e => { if(e.key=
 document.getElementById('inp-age').addEventListener('keydown',  e => { if(e.key==='Enter') wNext(2); });
 
 _applyWelcomeText();
-document.getElementById('inp-name').focus();
+if (localStorage.getItem('player_welcomed') === '1') {
+  document.getElementById('welcome').style.display = 'none';
+} else {
+  document.getElementById('inp-name').focus();
+}
 </script>
 </body>
 </html>
