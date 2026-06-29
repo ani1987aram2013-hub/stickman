@@ -77,6 +77,42 @@
     box-shadow:0 2px 0 #0f2580; transition:background .1s, transform .08s;
   }
   .wbtn:hover { background:#1630a0; transform:translateY(-1px); }
+
+  /* ── device profile card ── */
+  .profile-card {
+    background:#fff; border:1.5px solid #B0A898;
+    box-shadow:4px 4px 0 #B0A898; border-radius:4px;
+    width:100%; max-width:340px; padding:22px 26px;
+    display:flex; flex-direction:column; gap:14px;
+  }
+  .profile-card .pc-row {
+    display:flex; align-items:center; gap:12px;
+    font-size:.85rem; letter-spacing:.06em;
+  }
+  .profile-card .pc-row .pc-icon { font-size:1.4rem; min-width:28px; text-align:center; }
+  .profile-card .pc-row .pc-label { color:#999; font-size:.65rem; letter-spacing:.1em; display:block; }
+  .profile-card .pc-row .pc-val  { font-weight:700; }
+  .profile-card .pc-divider { border:none; border-top:1px solid #e0ddd5; margin:0; }
+  .ctrl-grid {
+    display:grid; grid-template-columns:repeat(3,1fr); gap:6px; width:100%;
+  }
+  .ctrl-key {
+    background:#F1EEE3; border:1.5px solid #B0A898;
+    border-radius:3px; padding:6px 4px;
+    font-size:.72rem; letter-spacing:.05em; text-align:center;
+    box-shadow:0 2px 0 #B0A898;
+  }
+  .ctrl-key .ck-key  { font-weight:700; font-size:.9rem; display:block; }
+  .ctrl-key .ck-desc { color:#888; font-size:.6rem; display:block; margin-top:2px; }
+  .touch-keys { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; width:100%; }
+  .touch-key {
+    background:#F1EEE3; border:1.5px solid #B0A898;
+    border-radius:3px; padding:8px 12px;
+    font-size:.78rem; letter-spacing:.05em; text-align:center;
+    box-shadow:0 2px 0 #B0A898;
+  }
+  .touch-key .ck-key  { font-weight:700; font-size:1.1rem; display:block; }
+  .touch-key .ck-desc { color:#888; font-size:.6rem; display:block; margin-top:2px; }
 </style>
 </head>
 <body>
@@ -104,15 +140,21 @@
   <div class="wq" id="wq3">
     <label id="lbl-device">Phone or PC?</label>
     <div class="device-row">
-      <button class="dev-btn" onclick="wFinish('phone')">
+      <button class="dev-btn" onclick="wDevice('phone')">
         <span class="icon">📱</span>
         <span id="lbl-phone">Phone</span>
       </button>
-      <button class="dev-btn" onclick="wFinish('pc')">
+      <button class="dev-btn" onclick="wDevice('pc')">
         <span class="icon">🖥️</span>
         <span id="lbl-pc">PC</span>
       </button>
     </div>
+  </div>
+
+  <!-- Step 4: Device Profile -->
+  <div class="wq" id="wq4">
+    <div class="profile-card" id="profile-card"></div>
+    <button class="wbtn" id="lbl-start" onclick="wFinish()">▶ Start!</button>
   </div>
 </div>
 
@@ -222,9 +264,41 @@
 
 // ── Welcome flow ──────────────────────────────────────────────────────────────
 const W_STRINGS = {
-  hy: { title:'Ձողամարդ', sub:'Բարի գալուստ!', name:'Անունդ?', age:'տարիքդ?', device:'հեռաղոսով կամ PC?', phone:'հեռախոսով', pc:'հաակարգիչով' },
-  ru: { title:'Палочник', sub:'Добро пожаловать!', name:'Твоё имя?', age:'Сколько тебе лет?', device:'Телефон или ПК?', phone:'Телефон', pc:'ПК' },
-  en: { title:'Stickman', sub:'Welcome!', name:'Your name?', age:'Your age?', device:'Phone or PC?', phone:'Phone', pc:'PC' },
+  hy: {
+    title:'Ձողամարդ', sub:'Բարի գալուստ!',
+    name:'Անունդ?', age:'Տարիքդ?', device:'Հեռախոսո՞վ, թե՞ PC?',
+    phone:'Հեռախոս', pc:'PC',
+    start:'▶ Սկսել!',
+    profileTitle:'Խաղացողի պրոֆիլ',
+    labelName:'Անուն', labelAge:'Տարիք', labelDevice:'Սարք',
+    controls:'Կառավարում',
+    // pc controls
+    pc_left:'← Ձախ', pc_right:'→ Աջ', pc_jump:'↑ Ցատկ', pc_space:'Space Ցատկ', pc_restart:'R Ռեստ.',
+    // phone controls
+    ph_left:'◀ Ձախ', ph_right:'▶ Աջ', ph_jump:'▲ Ցատկ',
+  },
+  ru: {
+    title:'Палочник', sub:'Добро пожаловать!',
+    name:'Твоё имя?', age:'Сколько лет?', device:'Телефон или ПК?',
+    phone:'Телефон', pc:'ПК',
+    start:'▶ Играть!',
+    profileTitle:'Профиль игрока',
+    labelName:'Имя', labelAge:'Возраст', labelDevice:'Устройство',
+    controls:'Управление',
+    pc_left:'← Влево', pc_right:'→ Вправо', pc_jump:'↑ Прыжок', pc_space:'Space Прыжок', pc_restart:'R Рестарт',
+    ph_left:'◀ Влево', ph_right:'▶ Вправо', ph_jump:'▲ Прыжок',
+  },
+  en: {
+    title:'Stickman', sub:'Welcome!',
+    name:'Your name?', age:'Your age?', device:'Phone or PC?',
+    phone:'Phone', pc:'PC',
+    start:'▶ Start!',
+    profileTitle:'Player Profile',
+    labelName:'Name', labelAge:'Age', labelDevice:'Device',
+    controls:'Controls',
+    pc_left:'← Left', pc_right:'→ Right', pc_jump:'↑ Jump', pc_space:'Space Jump', pc_restart:'R Restart',
+    ph_left:'◀ Left', ph_right:'▶ Right', ph_jump:'▲ Jump',
+  },
 };
 
 function _wt() {
@@ -234,13 +308,14 @@ function _wt() {
 
 function _applyWelcomeText() {
   const t = _wt();
-  document.getElementById('w-title').textContent   = t.title;
-  document.getElementById('w-sub').textContent     = t.sub;
-  document.getElementById('lbl-name').textContent  = t.name;
-  document.getElementById('lbl-age').textContent   = t.age;
-  document.getElementById('lbl-device').textContent= t.device;
-  document.getElementById('lbl-phone').textContent = t.phone;
-  document.getElementById('lbl-pc').textContent    = t.pc;
+  document.getElementById('w-title').textContent    = t.title;
+  document.getElementById('w-sub').textContent      = t.sub;
+  document.getElementById('lbl-name').textContent   = t.name;
+  document.getElementById('lbl-age').textContent    = t.age;
+  document.getElementById('lbl-device').textContent = t.device;
+  document.getElementById('lbl-phone').textContent  = t.phone;
+  document.getElementById('lbl-pc').textContent     = t.pc;
+  document.getElementById('lbl-start').textContent  = t.start;
 }
 
 // Re-apply welcome text when language changes
@@ -264,8 +339,64 @@ function wNext(step) {
   }
 }
 
-function wFinish(device) {
+function wDevice(device) {
   localStorage.setItem('player_device', device);
+  document.getElementById('wq3').classList.remove('active');
+  _buildProfile(device);
+  document.getElementById('wq4').classList.add('active');
+}
+
+function _buildProfile(device) {
+  const t    = _wt();
+  const name = localStorage.getItem('player_name') || '—';
+  const age  = localStorage.getItem('player_age')  || '—';
+  const isPhone = device === 'phone';
+  const devIcon = isPhone ? '📱' : '🖥️';
+  const devLabel = isPhone ? t.phone : t.pc;
+
+  const pcKeys = [
+    { key:'←', desc: t.pc_left.split(' ').slice(1).join(' ') },
+    { key:'→', desc: t.pc_right.split(' ').slice(1).join(' ') },
+    { key:'↑ / Space', desc: t.pc_jump.split(' ').slice(1).join(' ') },
+    { key:'R', desc: t.pc_restart.split(' ').slice(1).join(' ') },
+  ];
+  const phKeys = [
+    { key:'◀', desc: t.ph_left.split(' ').slice(1).join(' ') },
+    { key:'▶', desc: t.ph_right.split(' ').slice(1).join(' ') },
+    { key:'▲', desc: t.ph_jump.split(' ').slice(1).join(' ') },
+  ];
+  const keys = isPhone ? phKeys : pcKeys;
+  const keyClass = isPhone ? 'touch-key' : 'ctrl-key';
+  const gridClass = isPhone ? 'touch-keys' : 'ctrl-grid';
+
+  const keysHtml = keys.map(k =>
+    `<div class="${keyClass}"><span class="ck-key">${k.key}</span><span class="ck-desc">${k.desc}</span></div>`
+  ).join('');
+
+  document.getElementById('profile-card').innerHTML = `
+    <div class="pc-row">
+      <span class="pc-icon">👤</span>
+      <div><span class="pc-label">${t.labelName}</span><span class="pc-val">${name}</span></div>
+    </div>
+    <hr class="pc-divider">
+    <div class="pc-row">
+      <span class="pc-icon">🎂</span>
+      <div><span class="pc-label">${t.labelAge}</span><span class="pc-val">${age}</span></div>
+    </div>
+    <hr class="pc-divider">
+    <div class="pc-row">
+      <span class="pc-icon">${devIcon}</span>
+      <div><span class="pc-label">${t.labelDevice}</span><span class="pc-val">${devLabel}</span></div>
+    </div>
+    <hr class="pc-divider">
+    <div class="pc-row" style="flex-direction:column;align-items:flex-start;gap:8px;">
+      <span class="pc-label">${t.controls}</span>
+      <div class="${gridClass}">${keysHtml}</div>
+    </div>
+  `;
+}
+
+function wFinish() {
   localStorage.setItem('player_welcomed', '1');
   document.getElementById('welcome').style.display = 'none';
 }
