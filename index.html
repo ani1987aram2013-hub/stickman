@@ -40,9 +40,81 @@
   .lang-btn:hover { background:#F0EDE0; transform:translateY(-1px); }
   .lang-btn.active { background:var(--blue); color:#fff; border-color:var(--blue);
                      box-shadow:0 2px 0 #0f2580; }
+
+  /* ── welcome overlay ── */
+  #welcome {
+    position:fixed; inset:0; background:var(--bg);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:22px; z-index:200; padding:32px 16px;
+    font-family:'Courier New',monospace;
+  }
+  #welcome h2 { font-size:1.6rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; }
+  #welcome p  { font-size:.85rem; color:#666; letter-spacing:.08em; }
+  .wq { display:none; flex-direction:column; align-items:center; gap:14px; width:100%; max-width:340px; }
+  .wq.active { display:flex; }
+  .wq label { font-size:.75rem; letter-spacing:.1em; color:#888; align-self:flex-start; }
+  .wq input[type=text], .wq input[type=number] {
+    width:100%; padding:10px 14px; border:1.5px solid #B0A898;
+    background:#fff; font-family:'Courier New',monospace; font-size:1rem;
+    box-shadow:0 2px 0 #B0A898; border-radius:3px; color:var(--ink);
+    outline:none;
+  }
+  .wq input:focus { border-color:var(--blue); box-shadow:0 2px 0 var(--blue); }
+  .device-row { display:flex; gap:14px; width:100%; }
+  .dev-btn {
+    flex:1; padding:18px 10px; border:1.5px solid #B0A898; background:#fff;
+    font-family:'Courier New',monospace; font-size:.9rem; letter-spacing:.06em;
+    box-shadow:3px 3px 0 #B0A898; border-radius:3px; cursor:pointer;
+    color:var(--ink); transition:background .1s, transform .08s;
+    display:flex; flex-direction:column; align-items:center; gap:6px;
+  }
+  .dev-btn:hover { background:#F0EDE0; transform:translateY(-1px); }
+  .dev-btn span.icon { font-size:2rem; }
+  .wbtn {
+    padding:10px 28px; border:1.5px solid var(--blue); background:var(--blue);
+    color:#fff; font-family:'Courier New',monospace; font-size:.82rem;
+    letter-spacing:.1em; border-radius:3px; cursor:pointer;
+    box-shadow:0 2px 0 #0f2580; transition:background .1s, transform .08s;
+  }
+  .wbtn:hover { background:#1630a0; transform:translateY(-1px); }
 </style>
 </head>
 <body>
+
+<!-- ── Welcome flow ── -->
+<div id="welcome">
+  <h2 id="w-title">Ձołamard</h2>
+  <p id="w-sub">Welcome!</p>
+
+  <!-- Step 1: Name -->
+  <div class="wq active" id="wq1">
+    <label id="lbl-name">Your name?</label>
+    <input type="text" id="inp-name" maxlength="24" autocomplete="off" placeholder="…">
+    <button class="wbtn" onclick="wNext(1)">→</button>
+  </div>
+
+  <!-- Step 2: Age -->
+  <div class="wq" id="wq2">
+    <label id="lbl-age">Your age?</label>
+    <input type="number" id="inp-age" min="1" max="120" placeholder="…">
+    <button class="wbtn" onclick="wNext(2)">→</button>
+  </div>
+
+  <!-- Step 3: Device -->
+  <div class="wq" id="wq3">
+    <label id="lbl-device">Phone or PC?</label>
+    <div class="device-row">
+      <button class="dev-btn" onclick="wFinish('phone')">
+        <span class="icon">📱</span>
+        <span id="lbl-phone">Phone</span>
+      </button>
+      <button class="dev-btn" onclick="wFinish('pc')">
+        <span class="icon">🖥️</span>
+        <span id="lbl-pc">PC</span>
+      </button>
+    </div>
+  </div>
+</div>
 
 <div class="lang-bar">
   <button class="lang-btn" onclick="setLang('hy')" id="btn-hy">🇦🇲 Հայ</button>
@@ -147,6 +219,68 @@
 
 <script>
 // lang.js (loaded in <head>) handles applyLang() and setLang()
+
+// ── Welcome flow ──────────────────────────────────────────────────────────────
+const W_STRINGS = {
+  hy: { title:'Ձołamard', sub:'Բарի ģалуст!', name:'Անунd?', age:'Тарekd?', device:'Хосерфонi кам PC?', phone:'Хосерфон', pc:'Хамакарчи' },
+  ru: { title:'Палочник', sub:'Добро пожаловать!', name:'Твоё имя?', age:'Сколько тебе лет?', device:'Телефон или ПК?', phone:'Телефон', pc:'ПК' },
+  en: { title:'Stickman', sub:'Welcome!', name:'Your name?', age:'Your age?', device:'Phone or PC?', phone:'Phone', pc:'PC' },
+};
+
+function _wt() {
+  const code = localStorage.getItem('lang') || 'hy';
+  return W_STRINGS[code] || W_STRINGS.en;
+}
+
+function _applyWelcomeText() {
+  const t = _wt();
+  document.getElementById('w-title').textContent   = t.title;
+  document.getElementById('w-sub').textContent     = t.sub;
+  document.getElementById('lbl-name').textContent  = t.name;
+  document.getElementById('lbl-age').textContent   = t.age;
+  document.getElementById('lbl-device').textContent= t.device;
+  document.getElementById('lbl-phone').textContent = t.phone;
+  document.getElementById('lbl-pc').textContent    = t.pc;
+}
+
+// Re-apply welcome text when language changes
+const _origSetLang = setLang;
+setLang = function(code) { _origSetLang(code); _applyWelcomeText(); };
+
+function wNext(step) {
+  if (step === 1) {
+    const name = document.getElementById('inp-name').value.trim();
+    if (!name) { document.getElementById('inp-name').focus(); return; }
+    localStorage.setItem('player_name', name);
+    document.getElementById('wq1').classList.remove('active');
+    document.getElementById('wq2').classList.add('active');
+    document.getElementById('inp-age').focus();
+  } else if (step === 2) {
+    const age = document.getElementById('inp-age').value.trim();
+    if (!age || isNaN(age) || +age < 1) { document.getElementById('inp-age').focus(); return; }
+    localStorage.setItem('player_age', age);
+    document.getElementById('wq2').classList.remove('active');
+    document.getElementById('wq3').classList.add('active');
+  }
+}
+
+function wFinish(device) {
+  localStorage.setItem('player_device', device);
+  localStorage.setItem('player_welcomed', '1');
+  document.getElementById('welcome').style.display = 'none';
+}
+
+// Allow Enter key to advance
+document.getElementById('inp-name').addEventListener('keydown', e => { if(e.key==='Enter') wNext(1); });
+document.getElementById('inp-age').addEventListener('keydown',  e => { if(e.key==='Enter') wNext(2); });
+
+// Apply translated labels then show/skip
+_applyWelcomeText();
+if (localStorage.getItem('player_welcomed') === '1') {
+  document.getElementById('welcome').style.display = 'none';
+} else {
+  document.getElementById('inp-name').focus();
+}
 </script>
 </body>
 </html>
